@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple Breakout Game</title>
+    <style>
+        * { padding: 0; margin: 0; }
+
+        canvas { background: #ccc6ff;
+                display: block;
+                margin: 0 auto;
+                border: 10px solid #5c51bc}
+
+        h1 { text-align: center;
+            padding: 10px;
+            font-family: sans-serif;}
+
+    </style>
+</head>
+
+<body>
+
+    <h1>BREAKOUT</h1>
+
+    <canvas id="myCanvas" width="600" height="440"></canvas>
+
+    <script type="text/javascript">
+    // Reference canvas element to render graphics
+    // Then create ctx to store 2d rendering context
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        // Define ball's starting point
+        var x = canvas.width/2;
+        var y = canvas.height-30;
+
+        // Small value added to x and y after each from to make ball look like it's moving
+        var dx = 2;
+        var dy = -2;
+
+        // Drawing Function that will run again and again with different values each time
+        function draw() {
+            // Define Ball between beginPath and closePath
+            ctx.beginPath();
+            ctx.arc(x, y, 15, 0, Math.PI*2);
+            ctx.fillStyle = "#ff75ee";
+            ctx.fill();
+            ctx.closePath();
+            x += dx;
+            y += dy;
+        }
+        // Func executed ever 10 miliseconds
+        setInterval(draw, 10);
+
+
+
+
+    </script>
+</body>
+</html>
