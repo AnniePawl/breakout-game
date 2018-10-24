@@ -13,9 +13,9 @@
                 margin: 0 auto;
                 border: 10px solid #5c51bc}
 
-        h1 { text-align: center;
-            padding: 10px;
-            font-family: sans-serif;}
+         h1 { text-align: center;
+             padding: 10px;
+             font-family: sans-serif;}
 
     </style>
 </head>
@@ -34,41 +34,97 @@
         // Define ball's starting point
         var x = canvas.width/2;
         var y = canvas.height-30;
+        var ballRadius = 12;
         // Small value added to x and y after each from to make ball look like it's moving
         var dx = 2;
         var dy = -2;
-        //Prepping for collision calculations
-        var ballRadius = 10;
+        //Defining paddle to hit ball
+        var paddleHeight = 20;
+        var paddleWidth = 95;
+        var paddleX = (canvas.width-paddleWidth)/2;
+        // Pressed buttons variable
+        var rightPressed = false;
+        var leftPressed = false;
 
         // Drawing Function that will run again and again with different values each time
         function drawBall() {
         // Define Ball between beginPath and closePath
             ctx.beginPath();
             ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-            ctx.fillStyle = "#ff75ee";
+            ctx.fillStyle = getRandomColor();
             ctx.fill();
             ctx.closePath();
         }
+
+        // Define Paddle
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#f2a41d";
+            ctx.fill();
+            ctx.closePath();
+        }
+
 
         function draw() {
             // Method clears canvas content(area within rectangle)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBall();
+            drawPaddle();
 
             // Collision Detection
             if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-            dx = -dx;
+                dx = -dx;
             }
             if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
-            dy = -dy;
+                dy = -dy;
             }
             x += dx;
             y += dy;
 
+            // Check if cursor keys are pressed & makes sure paddled doesn't go off the page
+            if(rightPressed && paddleX < canvas.width-paddleWidth) {
+                paddleX += 7;
+            }
+            else if(leftPressed && paddleX > 0) {
+                paddleX -= 7;
+            }
         }
 
-        // Func executed ever 10 miliseconds
-        setInterval(draw, 10);
+        // Randomly change ball color
+        function getRandomColor() {
+          var letters = '0123456789ABCDEF';
+          var color = '#';
+          for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+        }
+
+        // Listens for key presses
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+
+        // Func executed ever 15 miliseconds
+        setInterval(draw, 15);
+
+        function keyDownHandler(e) {
+            if(e.keyCode == 39) {
+                rightPressed = true;
+            }
+            else if(e.keyCode == 37) {
+                leftPressed = true;
+            }
+        }
+
+        function keyUpHandler(e) {
+            if(e.keyCode == 39) {
+                rightPressed = false;
+            }
+            else if(e.keyCode == 37) {
+                leftPressed = false;
+            }
+        }
 
     </script>
 </body>
