@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Simple Breakout Game</title>
     <style>
-        * { padding: 0; margin: 0; }
+        * { padding: 0;
+            margin: 0; }
+
 
         canvas { background: #ccc6ff;
                 display: block;
@@ -55,6 +57,9 @@
         var brickOffsetLeft = 30;
         // Score variable
         var score = 0;
+        // Life variable
+        var lives = 3;
+
 
         // Create new bricks
         var bricks = [];
@@ -107,12 +112,20 @@
           }
         }
 
+        // Draw Score
         // Create and Update Score Display
         function drawScore() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
             ctx.fillText("Score: "+score, 8, 20);
         }
+        // Draw Lives
+        function drawLives() {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#0095DD";
+            ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+        }
+
         // Draw Ball
         function drawBall() {
         // Define Ball between beginPath and closePath
@@ -158,8 +171,9 @@
             drawBall();
             drawPaddle();
             drawBricks();
-            collisionDetection();
             drawScore();
+            drawLives();
+            collisionDetection();
 
             // Collision Detection
             // Ball bounces off top, left, right, and paddle
@@ -174,8 +188,18 @@
                     dy = -dy;
                 }
                 else {
-                    alert("GAME OVER");
-                    document.location.reload();
+                lives--;
+                    if(!lives) {
+                       alert("GAME OVER");
+                       document.location.reload();
+                    }
+                    else {
+                       x = canvas.width/2;
+                       y = canvas.height-30;
+                       dx = 2;
+                       dy = -2;
+                       paddleX = (canvas.width-paddleWidth)/2;
+                    }
                 }
             }
             if(rightPressed && paddleX < canvas.width-paddleWidth) {
