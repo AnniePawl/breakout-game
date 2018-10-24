@@ -1,0 +1,12 @@
+* { padding: 0;
+    margin: 0; }
+
+
+canvas { background: #ccc6ff;
+        display: block;
+        margin: 0 auto;
+        border: 10px solid #5c51bc}
+
+ h1 { text-align: center;
+     padding: 10px;
+     font-family: sans-serif;}
