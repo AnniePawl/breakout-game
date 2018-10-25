@@ -61,6 +61,15 @@
         }
     }
 
+    // Liten for mouse movement
+    document.addEventListener("mousemove", mouseMoveHandler, false);
+    function mouseMoveHandler(e) {
+    var relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth/2;
+        }
+    }
+
     // Brick Collision Detection
     function collisionDetection() {
       for(var c=0; c<brickColumnCount; c++) {
