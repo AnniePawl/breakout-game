@@ -5,7 +5,7 @@
     // Define ball's starting point
     var x = canvas.width/2;
     var y = canvas.height-30;
-    var ballRadius = 12;
+    var ballRadius = 20;
     // Small value added to x and y after each from to make ball look like it's moving
     var dx = 2;
     var dy = -2;
@@ -94,13 +94,13 @@
     // Create and Update Score Display
     function drawScore() {
         ctx.font = "16px Arial";
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#004051";
         ctx.fillText("Score: "+score, 8, 20);
     }
     // Draw Lives
     function drawLives() {
         ctx.font = "16px Arial";
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#004051";
         ctx.fillText("Lives: "+lives, canvas.width-65, 20);
     }
 
@@ -109,7 +109,7 @@
     // Define Ball between beginPath and closePath
         ctx.beginPath();
         ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-        ctx.fillStyle = getRandomColor();
+        ctx.fillStyle = drawColor;
         ctx.fill();
         ctx.closePath();
     }
@@ -118,7 +118,7 @@
     function drawPaddle() {
         ctx.beginPath();
         ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#f2a41d";
+         ctx.fillStyle = drawColor;
         ctx.fill();
         ctx.closePath();
     }
@@ -134,7 +134,7 @@
                      bricks[c][r].y = brickY;
                      ctx.beginPath();
                      ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                     ctx.fillStyle = "#f76ce6";
+                     ctx.fillStyle = drawColor;
                      ctx.fill();
                      ctx.closePath();
                  }
@@ -196,17 +196,22 @@
         else if(leftPressed && paddleX > 0) {
             paddleX -= 7;
         }
+
+        requestAnimationFrame(draw)
     }
 
-    // Randomly change ball color
-    function getRandomColor() {
-      var letters = '0123456789ABCDEF';
-      var color = '#';
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
+    // Randomly Change Color
+
+    function getRandomColor(min, max) {
+      var color = 0 + Math.floor(Math.random() * 360);
+      return `hsl(${color}, 100%, 50%)`;
     }
 
-    // Func executed ever 15 miliseconds
-    setInterval(draw, 10);
+    draw();
+
+
+    var drawColor = getRandomColor ();
+
+    setInterval (function(){
+        drawColor = getRandomColor(0, 360);
+    }, 400)
