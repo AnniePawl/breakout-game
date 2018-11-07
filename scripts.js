@@ -33,13 +33,35 @@ let score = 0;
 let lives = 3;
 
 
+class Brick {
+    constructor(x, y, w = 75, h = 20, color = 'red') {
+        this.x = x;
+        this.y = y;
+        this.status = true;
+        this.color = color ;
+        this.width = w;
+        this.height = h;
+    }
+
+    render(ctx) {
+        ctx.beginPath();
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
 // Create new bricks
 const bricks = [];
 for(let c = 0; c < brickColumnCount; c++) {
     bricks[c] = [];
     for(let r = 0; r < brickRowCount; r++) {
         // Make bricks disapear after hit
-        bricks[c][r] = { x: 0, y: 0, status: 1 }
+        // bricks[c][r] = { x: 0, y: 0, status: 1 }
+        const brickX = (c * (brickWidth+brickPadding)) + brickOffsetLeft;
+        const brickY = (r * (brickHeight+brickPadding)) + brickOffsetTop;
+        bricks[c][r] = new Brick(brickX, brickY)
     }
 }
 
@@ -111,15 +133,36 @@ function drawLives() {
     ctx.fillStyle = "#004051";
     ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
-// Draw Ball
-function drawBall() {
-// Define Ball between beginPath and closePath
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = drawColor;
-    ctx.fill();
-    ctx.closePath();
+// // Draw Ball
+// function drawBall() {
+// // Define Ball between beginPath and closePath
+//     ctx.beginPath();
+//     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+//     ctx.fillStyle = drawColor;
+//     ctx.fill();
+//     ctx.closePath();
+// }
+
+// Draws Ball
+// Refactored, created Ball Class
+class Ball {
+    constructor(radius, color = "#0095DD") {
+        this.radius = radius;
+        this.color = color;
+    }
+    render(ctx) {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+        ctx.fillStyle = drawColor;
+        ctx.fill();
+        ctx.closePath();
+    }
 }
+
+
+
+
+
 // Draw Paddle
 function drawPaddle() {
     ctx.beginPath();
@@ -133,24 +176,18 @@ function drawBricks() {
     for(let c = 0; c < brickColumnCount; c++) {
         for(let r = 0; r < brickRowCount; r++) {
             if(bricks[c][r].status == 1) {
-                 const brickX = (c * (brickWidth+brickPadding)) + brickOffsetLeft;
-                 const brickY = (r * (brickHeight+brickPadding)) + brickOffsetTop;
-                 bricks[c][r].x = brickX;
-                 bricks[c][r].y = brickY;
-                 ctx.beginPath();
-                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                 ctx.fillStyle = drawColor;
-                 ctx.fill();
-                 ctx.closePath();
+                bricks[c][r].render(ctx)
              }
         }
     }
 }
+
+const drawBall= new Ball(ballRadius, "red")
 // Draw Ball, Paddle, Bricks, and Score Display
 function draw() {
     // Method clears canvas content(area within rectangle)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBall();
+    drawBall.render(ctx);
     drawPaddle();
     drawBricks();
     drawScore();
