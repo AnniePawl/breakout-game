@@ -32,7 +32,6 @@ let score = 0;
 // Life variable
 let lives = 3;
 
-
 // Ball Class
 class Ball {
     constructor(radius, color = "#0095DD") {
@@ -47,6 +46,7 @@ class Ball {
         ctx.closePath();
     }
 }
+
 // Create New Ball
 const drawBall= new Ball(ballRadius, "red")
 
@@ -131,6 +131,22 @@ class Score {
 // Create Score
 const drawScore = new Score()
 
+//Lives Class
+class Lives {
+    constructor(x, y, color, lives, font) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.lives = lives;
+        this.font = font;
+    }
+    render(ctx) {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#004051";
+        ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+    }
+}
+const drawLives = new Lives()
 
 // Listens for key presses
 document.addEventListener("keydown", keyDownHandler, false);
@@ -186,15 +202,6 @@ function collisionDetection() {
 
 let drawColor = getRandomColor ();
 
-
-// Draw Lives
-function drawLives() {
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "#004051";
-    ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
-}
-
-
 // Draw Ball, Paddle, Bricks, and Score Display
 function draw() {
     // Method clears canvas content(area within rectangle)
@@ -203,7 +210,7 @@ function draw() {
     drawPaddle.render(ctx);
     drawBricks(ctx);
     drawScore.render(ctx);
-    drawLives();
+    drawLives.render(ctx);
     collisionDetection();
 
     // Collision Detection
