@@ -3,14 +3,6 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-// Define ball's starting point and size
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-const ballRadius = 20;
-// Move Ball! Add tiny value to x and y after each clear to make ball look like it's moving
-let dx = 2;
-let dy = -2;
-
 //Define paddle to hit ball
 const paddleHeight = 20;
 const paddleWidth = 95;
@@ -34,21 +26,29 @@ let lives = 3;
 
 // Ball Class
 class Ball {
-    constructor(radius, color = "#0095DD") {
+    constructor(radius = 20, color = "#0095DD") {
         this.radius = radius;
         this.color = color;
+        // Move Ball! Add tiny value to x and y after each clear to make ball look like it's moving
+        this.dx = 5;
+        this.dy = -5;
+        this.x = 0;
+        this.y = 0;
     }
     render(ctx) {
         ctx.beginPath();
-        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-        ctx.fillStyle = drawColor;
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
         ctx.fill();
         ctx.closePath();
     }
 }
 
 // Create New Ball
-const drawBall= new Ball(ballRadius, "red")
+const drawBall= new Ball(15, "#000000")
+// Define ball's starting point and size
+drawBall.x = canvas.width / 2;
+drawBall.y = canvas.height - 30;
 
 // Brick Class
 class Brick {
@@ -115,7 +115,7 @@ const drawPaddle = new Paddle()
 
 // Score Class
 class Score {
-    constructor(x, y, color, score, font){
+    constructor(x = 8, y = 20, color = "#004051", score = 0, font = "16px Arial"){
         this.x = x;
         this.y = y;
         this.color = color;
@@ -123,13 +123,14 @@ class Score {
         this.font = font;
     }
     render(ctx) {
-        ctx.font = "16px Arial";
-        ctx.fillStyle = "#004051";
-        ctx.fillText("Score: " + score, 8, 20);
+        ctx.font = this.font;
+        ctx.fillStyle = this.color;
+        ctx.fillText("Score: " + this.score, this.x, this.y);
     }
 }
 // Create Score
 const drawScore = new Score()
+// {x, y, color ...}
 
 //Lives Class
 class Lives {
@@ -186,11 +187,11 @@ function collisionDetection() {
       //b stores brick object in every loop
       const b = bricks[c][r];
       if(b.status == 1) {
-        if(x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-          dy = -dy;
+        if(drawBall.x > b.x && drawBall.x < b.x + brickWidth && drawBall.y > b.y && drawBall.y < b.y + brickHeight) {
+          drawBall.dy = -drawBall.dy;
           b.status = 0;
-          score++;
-          if(score == brickRowCount * brickColumnCount) {
+          drawScore.score++;
+          if(drawScore.score == brickRowCount * brickColumnCount) {
             alert("YOU WIN, CONGRATS!");
             document.location.reload();
           }
@@ -201,6 +202,7 @@ function collisionDetection() {
 }
 
 let drawColor = getRandomColor ();
+
 
 // Draw Ball, Paddle, Bricks, and Score Display
 function draw() {
@@ -215,15 +217,15 @@ function draw() {
 
     // Collision Detection
     // Ball bounces off top, left, right, and paddle
-    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
-        dx = -dx;
+    if(drawBall.x + drawBall.dx > canvas.width- drawBall.radius || drawBall.x + drawBall.dx < drawBall.radius) {
+        drawBall.dx = -drawBall.dx;
     }
-    if(y + dy < ballRadius) {
-        dy = -dy;
+    if(drawBall.y + drawBall.dy < drawBall.radius) {
+        drawBall.dy = -drawBall.dy;
     }
-    else if(y + dy > canvas.height - ballRadius) {
-        if(x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
+    else if(drawBall.y + drawBall.dy > canvas.height - drawBall.radius) {
+        if(drawBall.x > paddleX && drawBall.x < paddleX + paddleWidth) {
+            drawBall.dy = -drawBall.dy;
         }
         else {
         lives--;
@@ -232,10 +234,10 @@ function draw() {
                document.location.reload();
             }
             else {
-               x = canvas.width / 2;
-               y = canvas.height - 30;
-               dx = 2;
-               dy = -2;
+               drawBall.x = canvas.width / 2;
+               drawBall.y = canvas.height - 30;
+               drawBall.dx = 2;
+               drawBall.dy = -2;
                paddleX = (canvas.width - paddleWidth)/2;
             }
         }
@@ -246,8 +248,8 @@ function draw() {
     else if(leftPressed && paddleX > 0) {
         paddleX -= 7;
     }
-    x += dx;
-    y += dy;
+    drawBall.x += drawBall.dx;
+    drawBall.y += drawBall.dy;
 
     // Check if cursor keys are pressed & makes sure paddled doesn't go off the page
     if(rightPressed && paddleX < canvas.width - paddleWidth) {
