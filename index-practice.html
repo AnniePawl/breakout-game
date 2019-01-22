@@ -36,12 +36,13 @@
         // Add small value to x and y to make ball move
         var dx = 2;
         var dy = -2;
+        var radius = 20;
 
 // Draw Ball function
 function drawBall() {
     ctx.beginPath();
     // Use Math.PI*2 to create a circle
-    ctx.arc(x, y, 25, 0, Math.PI*2);
+    ctx.arc(x, y, radius, 0, Math.PI*2);
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
@@ -51,6 +52,14 @@ function drawBall() {
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
+    // Top and Bottom Collision Detection
+    if(y + dy > canvas.height-radius || y + dy < 0){
+        dy= -dy;
+    }
+    // Right and Left Collision Detection
+    if (x + dx > canvas.width-radius || x + dx < 0){
+        dx = -dx;
+    }
     // Update x and y ater each frame
     x += dx;
     y += dy;
@@ -68,6 +77,8 @@ setInterval(draw, 10);
         // ctx.fill();
         // ctx.closePath();
     </script>
+
+
 
 </body>
 
