@@ -9,11 +9,12 @@
 <!--Reference Style Sheet -->
     <style>
     * { padding: 0; margin: 0; }
-    	canvas { background: red; display: block; margin: 0 auto; }
+    	canvas { background: #ff9896; display: block; margin: 0 auto; }
     </style>
 </head>
 
 <body>
+    <h1>Badass Breakout</h1>
 <!--Reference Canvas Element-->
     <canvas id="canvas-practice" width="500" height="350"></canvas>
 
@@ -23,12 +24,12 @@
         var canvas = document.getElementById("canvas-practice");
 // Store 2D rendering in ctx variable
         var ctx = canvas.getContext("2d");
-// Draw a simple red rectangle
+// Draw a simple rectangle
 // Use beingPath() and endPath() methods to specify location of top left corner
         ctx.beginPath();
 // Refers to x, y, width, height
-        ctx.rect(20, 40, 50, 50)
-        ctx.fillStyle = #FF0000;
+        ctx.arc(240, 160, 20, 0, Math.PI*2, false);
+        ctx.fillStyle = 'black';
         ctx.fill();
         ctx.closePath();
     </script>
