@@ -8,30 +8,65 @@
     <title>Breakout-Practice</title>
 <!--Reference Style Sheet -->
     <style>
-    * { padding: 0; margin: 0; }
-    	canvas { background: #ff9896; display: block; margin: 0 auto; }
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    canvas {
+        background: #ff9896;
+        display: block;
+        margin: 0 auto;
+    }
     </style>
+
 </head>
 
 <body>
     <h1>Badass Breakout</h1>
-<!--Reference Canvas Element-->
+    <!--Reference Canvas Element-->
     <canvas id="canvas-practice" width="500" height="350"></canvas>
-
-<!--Reference JavaScript File-->
+    <!--Reference JavaScript File-->
     <script type="text/javascript">
-// Store Reference to <canvas> element in canvas variable
+        // Store Reference to <canvas> element in canvas variable
         var canvas = document.getElementById("canvas-practice");
-// Store 2D rendering in ctx variable
+        // Store 2D rendering in ctx variable
         var ctx = canvas.getContext("2d");
+        var x = canvas.width/2;
+        var y = canvas.height-30;
+        // Add small value to x and y to make ball move
+        var dx = 2;
+        var dy = -2;
+
+// Draw Ball function
+function drawBall() {
+    ctx.beginPath();
+    // Use Math.PI*2 to create a circle
+    ctx.arc(x, y, 25, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+// Drawing Function
+function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBall();
+    // Update x and y ater each frame
+    x += dx;
+    y += dy;
+}
+// Set Interval to redraw every 10 seconds
+// setInterval is infinate in nature
+setInterval(draw, 10);
+
 // Draw a simple rectangle
 // Use beingPath() and endPath() methods to specify location of top left corner
-        ctx.beginPath();
+        // ctx.beginPath();
 // Refers to x, y, width, height
-        ctx.arc(240, 160, 20, 0, Math.PI*2, false);
-        ctx.fillStyle = 'black';
-        ctx.fill();
-        ctx.closePath();
+        // ctx.arc(240, 160, 20, 0, Math.PI*2, false);
+        // ctx.fillStyle = 'black';
+        // ctx.fill();
+        // ctx.closePath();
     </script>
 
 </body>
