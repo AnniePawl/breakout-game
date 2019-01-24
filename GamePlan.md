@@ -61,5 +61,45 @@ else if(leftPressed && paddleX > 0) {
 2. Update Collision detection to allow ball to bounce off all walls _except the bottom_
 3. Change setInterval to `var interval = setInterval(draw,10);`
 
-# Paddle/ Ball Collision
-1. 
+# Drawing Brick Field
+1. Define variables w/ brick height, width, rows, columns, padding, top and left offset
+2. Use **nested loop** that works through a _2D array_ that will contain brick columns (c), which contain brick rows (r), which contain bricks x and y position.
+```
+var bricks = [];
+    for(var c=0; c<brickColumnCount; c++) {
+        bricks[c] = [];
+        for(var r=0; r<brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0 };
+        }
+    }
+```
+3. Draw Bricks w/ `function drawBricks()`. Loop through rows and columns and adjust position so they're not drawn ontop of each other.
+```
+function drawBricks() {
+    for(var c=0; c<brickColumnCount; c++) {
+        for(var r=0; r<brickRowCount; r++) {
+            bricks[c][r].x = 0;
+            bricks[c][r].y = 0;
+            ctx.beginPath();
+            ctx.rect(0, 0, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+}
+```
+4. Lastly, `drawBricks();`
+
+# Brick Collision Detection
+1. Create collision detection function that loops through all bricks and compares brick position with ball coordinates as each frame is drawn
+2. If center of ball is inside coordinate of brick, ball direction should change. The following statements must be true: </br>
+    - The x position of the ball is greater than the x position of the brick.
+    - The x position of the ball is less than the x position of the brick plus its width.
+    - The y position of the ball is greater than the y position of the brick.
+    - The y position of the ball is less than the y position of the brick plus its height.
+3. **Activate** by calling in main `draw()` function
+
+# Making Bricks Disappear
+1. Need extra parameter to indicate if brick should be drawn or not. Add **status property** to each brick object
+2. Update `drawBricks();` function. Check status property before drawing brick. If status is 1, draw it, if not then don't
