@@ -103,3 +103,11 @@ function drawBricks() {
 # Making Bricks Disappear
 1. Need extra parameter to indicate if brick should be drawn or not. Add **status property** to each brick object
 2. Update `drawBricks();` function. Check status property before drawing brick. If status is 1, draw it, if not then don't
+
+# Tracking Score
+1. Create score variable `var score = 0;`
+2. Create `function drawScore();`
+3. Add `score++;` to collision detection function to increment score value after each collision
+
+# Winning Message Display
+1. Display a winning message if all available points have been collected. Add this to `collisionDetection()` function
