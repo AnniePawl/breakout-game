@@ -47,7 +47,7 @@ function keyDownHandler(e) {
     }
 }
 ```
-4. Add paddle moving logic to `draw()` function. Make sure to give paddle boundaries so it doesn't float off the screen. 
+4. Add paddle moving logic to `draw()` function. Make sure to give paddle boundaries so it doesn't float off the screen.
 ```
 if(rightPressed && paddleX < canvas.width-paddleWidth) {
     paddleX += 7;
@@ -56,3 +56,10 @@ else if(leftPressed && paddleX > 0) {
     paddleX -= 7;
 }
 ```
+# Game Over Logic
+1. If you miss ball w/ paddle and it touches the bottom edge of the screen, _game over_
+2. Update Collision detection to allow ball to bounce off all walls _except the bottom_
+3. Change setInterval to `var interval = setInterval(draw,10);`
+
+# Paddle/ Ball Collision
+1. 
