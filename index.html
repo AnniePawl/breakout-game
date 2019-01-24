@@ -54,6 +54,8 @@
         var brickOffsetLeft = 30;
         // Score Variable
         var score = 0;
+        // Lives Variable
+        var lives = 3;
 
 // 2D Array to hold bricks
 // status property indicating to draw brick or not
@@ -69,14 +71,23 @@ for(var c=0; c<brickColumnCount; c++) {
 // Keyboard Event Listeners
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
+// Mouse event Listener
+document.addEventListener("mousemove", mouseMoveHandler, false);
 
-// Handle keyup and keydown events w/ keys pressed
+// Handle Keyup and Keydown events w/ keys pressed
 function keyDownHandler(e) {
     if(e.key == "Right" || e.key == "ArrowRight") {
         rightPressed = true;
     }
     else if(e.key == "Left" || e.key == "ArrowLeft") {
         leftPressed = true;
+    }
+}
+// Handle Mouse Movements
+function mouseMoveHandler(e) {
+    var relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth/2;
     }
 }
 
@@ -102,7 +113,7 @@ function collisionDetection() {
                     if(score == brickRowCount*brickColumnCount) {
                         alert("YOU WIN, CONGRATULATIONS!");
                         document.location.reload();
-                        clearInterval(interval); // Needed for Chrome to end game
+                     // Needed for Chrome to end game
                     }
                 }
             }
@@ -115,6 +126,13 @@ function drawScore() {
     ctx.font = "16px Arial";
     ctx.fillStyle = "#0095DD";
     ctx.fillText("Score: "+score, 8, 20);
+}
+
+// Draw Lives Function
+function drawLives() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Lives: "+lives, canvas.width-65, 20);
 }
 
 
@@ -165,6 +183,7 @@ function draw(){
     drawBricks();
     collisionDetection();
     drawScore();
+    drawLives();
     // Right and Left Collision Detection
     if (x + dx > canvas.width-radius || x + dx < radius){
         dx = -dx;
@@ -178,10 +197,19 @@ function draw(){
             dy = -dy;
         }
         else {
-            alert("GAME OVER");
-            document.location.reload();
-            clearInterval(interval);
+            if(!lives) {
+                alert("GAME OVER");
+                document.location.reload();
+            }
+            else {
+                x = canvas.width/2;
+                y = canvas.height-30;
+                dx = 2;
+                dy = -2;
+                paddleX = (canvas.width-paddleWidth)/2;
+            }
         }
+    requestAnimationFrame(draw);
     }
 
     if(rightPressed && paddleX < canvas.width-paddleWidth) {
@@ -198,7 +226,7 @@ function draw(){
 // Set Interval to redraw every 10 seconds
 // setInterval is infinate in nature
 // setInterval(draw, 10);
-var interval = setInterval(draw, 10);
+draw();
 
 // Draw a simple rectangle
 // Use beingPath() and endPath() methods to specify location of top left corner

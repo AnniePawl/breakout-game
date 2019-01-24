@@ -1,0 +1,24 @@
+{
+  "name": "breakout-game",
+  "version": "1.0.0",
+  "description": "A clone of the classic arcade game, Breakout.<br /> Written in pure JavaScript and rendered on HTML5 `<canvas>`",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnniePawl/breakout-game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnniePawl/breakout-game/issues"
+  },
+  "homepage": "https://github.com/AnniePawl/breakout-game#readme",
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.15.0"
+  }
+}

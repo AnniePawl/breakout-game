@@ -111,3 +111,16 @@ function drawBricks() {
 
 # Winning Message Display
 1. Display a winning message if all available points have been collected. Add this to `collisionDetection()` function
+
+# Mouse Movement
+1. Just add mouse event listener (like key listener)
+
+# Lives!
+1. Create life variable `var lives = 3;`
+2. Create `function drawLives();` (just like drawing score)
+3. Update gameOver to decrease num of lives by 1 until 0
+
+# Animation Frame
+1. Important b/c helps browser render game better than fixed frame rate
+2. Replace set interval with `draw()`
+3. Remove all `clearInterval(interval)`
