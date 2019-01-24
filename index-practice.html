@@ -37,6 +37,13 @@
         var dx = 2;
         var dy = -2;
         var radius = 20;
+        // Define H and W, and starting pt of paddle
+        var paddleHeight = 10;
+        var paddleWidth = 75;
+        var paddleX = (canvas.width-paddleWidth)/2;
+        // Store l/r control button info (default false)
+        var rightPressed = false;
+        var leftPressed = false;
 
 // Draw Ball function
 function drawBall() {
@@ -48,22 +55,62 @@ function drawBall() {
     ctx.closePath();
 }
 
+// Draw Paddle function
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
 // Drawing Function
 function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
+    drawPaddle();
     // Top and Bottom Collision Detection
-    if(y + dy > canvas.height-radius || y + dy < 0){
+    if(y + dy > canvas.height-radius || y + dy < radius){
         dy= -dy;
     }
     // Right and Left Collision Detection
-    if (x + dx > canvas.width-radius || x + dx < 0){
+    if (x + dx > canvas.width-radius || x + dx < radius){
         dx = -dx;
     }
     // Update x and y ater each frame
     x += dx;
     y += dy;
+
+    if(rightPressed && paddleX < canvas.width-paddleWidth) {
+    paddleX += 7;
+    }
+    else if(leftPressed && paddleX > 0) {
+    paddleX -= 7;
 }
+    }
+
+// Keyboard Event Listeners
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+// Handle keyup and keydown events w/ keys pressed
+function keyDownHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = true;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.key == "Right" || e.key == "ArrowRight") {
+        rightPressed = false;
+    }
+    else if(e.key == "Left" || e.key == "ArrowLeft") {
+        leftPressed = false;
+    }
+}
+
 // Set Interval to redraw every 10 seconds
 // setInterval is infinate in nature
 setInterval(draw, 10);
