@@ -30,7 +30,10 @@ var score = 0;
 var lives = 3;
 
 // 2D Array to hold bricks
-// status property indicating to draw brick or not
+// Status property indicating to draw brick or nah
+// c is column num, used to set x position of brick
+// r is row num, used to set y...
+// Counts from 0 to brickRowCount
 var bricks = [];
 for(var c=0; c<brickColumnCount; c++) {
 bricks[c] = [];
@@ -112,7 +115,7 @@ function drawBall() {
 ctx.beginPath();
 // Use Math.PI*2 to create a circle
 ctx.arc(x, y, radius, 0, Math.PI*2);
-ctx.fillStyle = "#0095DD";
+ctx.fillStyle = drawColor;
 ctx.fill();
 ctx.closePath();
 }
@@ -121,7 +124,7 @@ ctx.closePath();
 function drawPaddle() {
 ctx.beginPath();
 ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-ctx.fillStyle = "#0095DD";
+ctx.fillStyle = drawColor;
 ctx.fill();
 ctx.closePath();
 }
@@ -138,13 +141,16 @@ for(var r=0; r<brickRowCount; r++) {
         bricks[c][r].y = brickY;
         ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = "#0095DD";
+
+        ctx.fillStyle = drawColor;
         ctx.fill();
         ctx.closePath();
     }
 }
 }
 }
+
+let drawColor = getRandomColor ()
 
 // Drawing Function
 function draw(){
@@ -195,10 +201,26 @@ y += dy;
 requestAnimationFrame(draw);
 }
 
-// Set Interval to redraw every 10 seconds
-// setInterval is infinate in nature
-// setInterval(draw, 10);
+// Randomly Change Color! Wahoo !
+function getRandomColor(min, max) {
+  const color = 0 + Math.floor(Math.random() * 360);
+  return `hsl(${color}, 100%, 50%)`;
+}
+
+// Color bricks by column
+
+// Change bricks by column
+
+// Alternate brick colors
+
+// Random brick colors
+
 draw();
+
+// setInterval is infinate in nature
+setInterval (function(){
+    drawColor = getRandomColor(0, 360);
+}, 400)
 
 // Draw a simple rectangle
 // Use beingPath() and endPath() methods to specify location of top left corner
